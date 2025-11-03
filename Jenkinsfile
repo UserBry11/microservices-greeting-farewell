@@ -16,7 +16,11 @@ pipeline {
         stage('Build JARs') {
             steps {
                 echo "🔹 Building all Maven projects..."
-                sh 'mvn -B clean package -DskipTests'
+                sh """
+                        cd Eureka-Server && mvn -B clean package -DskipTests && cd ..
+                        cd Eureka-ClientA && mvn -B clean package -DskipTests && cd ..
+                        cd Eureka-ClientB && mvn -B clean package -DskipTests && cd ..
+                    """
             }
         }
 
