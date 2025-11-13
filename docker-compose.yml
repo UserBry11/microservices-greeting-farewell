@@ -71,8 +71,12 @@ services:
       - eureka-net
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     container_name: jenkins
+    user: root
+    privileged: true
     ports:
       - "8085:8080"
       - "50000:50000"
