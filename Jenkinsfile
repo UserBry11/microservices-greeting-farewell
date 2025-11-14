@@ -29,28 +29,41 @@ pipeline {
             steps {
                 echo '🧰 Checking environment setup...'
                 sh '''
-                echo "🔹 Verifying installed tools..."
+                    echo "🔹 Verifying installed tools..."
 
-                if ! command -v git &> /dev/null; then
-                  echo "❌ Git is not installed." >&2; exit 1
-                fi
+                    if ! command -v git >/dev/null 2>&1; then
+                        echo "❌ Git is not installed."
+                        exit 1
+                    else
+                        echo "✔ Git found: $(command -v git)"
+                    fi
 
-                if ! command -v mvn &> /dev/null; then
-                  echo "❌ Maven is not installed." >&2; exit 1
-                fi
+                    if ! command -v mvn >/dev/null 2>&1; then
+                        echo "❌ Maven is not installed."
+                        exit 1
+                    else
+                        echo "✔ Maven found: $(command -v mvn)"
+                    fi
 
-                if ! command -v docker &> /dev/null; then
-                  echo "❌ Docker CLI missing." >&2; exit 1
-                fi
+                    if ! command -v docker >/dev/null 2>&1; then
+                        echo "❌ Docker CLI missing."
+                        exit 1
+                    else
+                        echo "✔ Docker found: $(command -v docker)"
+                    fi
 
-                if [ ! -S /var/run/docker.sock ]; then
-                  echo "❌ Docker socket not mounted! Mount it in docker-compose.yml" >&2; exit 1
-                fi
+                    if [ ! -S /var/run/docker.sock ]; then
+                        echo "❌ Docker socket not mounted!"
+                        exit 1
+                    else
+                        echo "✔ Docker socket available."
+                    fi
 
-                echo "✅ Environment OK — ready to build."
+                    echo "✅ Environment OK — ready to build."
                 '''
             }
         }
+
 
         /************************************************************
          * CHECKOUT
